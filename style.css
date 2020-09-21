@@ -20,6 +20,7 @@ img{
 height: 200px;
 border: 2px double blue;
 margin:2%;
+
 }
 #finalResult{
     display: inline-block;
@@ -29,4 +30,17 @@ margin:2%;
 }
 img:hover{
     border: 15px double white;
+}
+#finalResult{
+    border: 6px blue solid;
+    color: blue;
+    padding: 30px;
+}
+#finalResult:hover{
+    border: 9px white double;
+}
+
+#myChart{
+    width: 400px;
+    height: 400px;
 }

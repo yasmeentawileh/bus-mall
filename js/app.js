@@ -11,6 +11,10 @@ var leftSideImage;
 var centerSideImage;
 var rightSideImage;
 var totalClicks=0;
+var arraynames=[];
+var arrayvotes=[];
+var arraydispaly=[];
+var arrayrepeat=[-1,-1,-1];
 var resultList=document.getElementById('finalResult');
 
 // constructer
@@ -50,16 +54,23 @@ function displayRandomImages(){
   var leftImageIndex;
   var centerImageIndex;
   var rightImageIndex;
-  leftImageIndex = Math.floor((Math.random() * allProducts.length));
-  console.log('leftImageIndex',leftImageIndex);
+  do{
+    leftImageIndex = Math.floor((Math.random() * allProducts.length));
+    console.log('leftImageIndex',leftImageIndex);
+  }while(arrayrepeat[0]===leftImageIndex ||arrayrepeat[1]===leftImageIndex|| arrayrepeat[2]===leftImageIndex);
+
   do{
     centerImageIndex = Math.floor((Math.random() * allProducts.length));
     console.log(centerImageIndex+'yasmeen');
-  } while(leftImageIndex === centerImageIndex || leftImageIndex === rightImageIndex || centerImageIndex ===rightImageIndex);
+  } while(leftImageIndex === centerImageIndex ||arrayrepeat[0]===centerImageIndex ||arrayrepeat[1]===centerImageIndex|| arrayrepeat[2]===centerImageIndex );
   do{
     rightImageIndex = Math.floor((Math.random() * allProducts.length));
     console.log(rightImageIndex+'yasmeen');
-  } while(leftImageIndex === rightImageIndex || leftImageIndex === centerImageIndex || centerImageIndex ===rightImageIndex );
+  } while(leftImageIndex === rightImageIndex || centerImageIndex ===rightImageIndex ||arrayrepeat[0]===rightImageIndex ||arrayrepeat[1]===rightImageIndex|| arrayrepeat[2]===rightImageIndex);
+  arrayrepeat=[];
+  arrayrepeat.push(leftImageIndex);
+  arrayrepeat.push(centerImageIndex);
+  arrayrepeat.push(rightImageIndex);
   displayImages(leftImageIndex,centerImageIndex,rightImageIndex);
 }
 // Function to display the images
@@ -97,14 +108,49 @@ totalClicks++;
     if(totalClicks>=25){
         imagesSection.removeEventListener('click',handleVote);
         console.log(allProducts);
+        for (var i=0;i<allProducts.length;i++){
+          arraynames[i]=allProducts[i].productName;
+          arrayvotes[i]=allProducts[i].votes;
+          arraydispaly[i]=allProducts[i].timesDisplayed;
+          console.log(allProducts[i]);
+       }
         displayResults();
+        thechart();
     }
 }
 function displayResults(){
     var listItem;
     for(var i=0;i<allProducts.length;i++){
 listItem=document.createElement('li');
-listItem.textContent= allProducts[i].productName+' had '+allProducts[i].votes+' votes and was showen'+allProducts[i].timesDisplayed+' times .';
+listItem.textContent= allProducts[i].productName+' had '+allProducts[i].votes+' votes and was showen '+allProducts[i].timesDisplayed+' times .';
 resultList.appendChild(listItem);
     }
 }
+function thechart(){
+var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'bar',
+
+    // The data for our dataset
+    data: {
+        labels: arraynames,
+        datasets: [{
+            label: 'Number of Votes',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: arrayvotes,
+        }, {label: 'Number of display',
+        backgroundColor: 'rgb(155, 52, 235)',
+        borderColor: 'rgb(155, 52, 235)',
+        data: arraydispaly,
+      }]
+    },
+
+    // Configuration options go here
+    options: {}
+});
+}
+
+
+
