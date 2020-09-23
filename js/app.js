@@ -25,7 +25,16 @@ function ProductImage(productName,link){
   this.votes=0;
   this.timesDisplayed=0;
   allProducts.push(this);
+  localStorage.setItem('allVotes', JSON.stringify(ProductImage.votes));
+
 }
+if(localStorage.getItem('allVotes')){
+  ProductImage.votes = JSON.parse(localStorage.getItem('allVotes'));
+} else{
+ProductImage.votes = [];
+}
+
+
 
 //Creating objects
 new ProductImage('bag','img/bag.jpg');
@@ -126,6 +135,7 @@ listItem.textContent= allProducts[i].productName+' had '+allProducts[i].votes+' 
 resultList.appendChild(listItem);
     }
 }
+//to make a chart
 function thechart(){
 var ctx = document.getElementById('myChart').getContext('2d');
 var chart = new Chart(ctx, {
